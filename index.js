@@ -1,5 +1,5 @@
 
-const dgram = require('dgram')
+const net = require('net');
 const os = require('os')
 
 const winston = require('winston')
@@ -28,8 +28,11 @@ class LogstashTransport extends winston.Transport {
   }
 
   connect() {
-    this.client = dgram.createSocket('udp4')
-    this.client.unref()
+    this.client = new net.Socket();
+    this.client.connect(this.port, this.host, () => {
+      console.log(`Connected to ${this.host}:${this.port}`);
+    });
+    this.client.unref();
   }
 
   log(info, callback) {
@@ -49,7 +52,7 @@ class LogstashTransport extends winston.Transport {
     }
 
     const buf = Buffer.from(message)
-    this.client.send(buf, 0, buf.length, this.port, this.host, (callback || noop))
+    this.client.write(buf, callback || noop);
   }
 }
 
