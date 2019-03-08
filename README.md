@@ -1,4 +1,4 @@
-# winston-logstash-transport
+# A fork of winston-logstash-transport with TCP support instead of UDP
 
 ## Example
 
@@ -32,7 +32,7 @@ const logger = winston.createLogger({
 
   * `options`
   * `options.host`, logstash host
-  * `options.port`, logstash UDP port
+  * `options.port`, logstash TCP port
 
 * `createLogger()`
 
